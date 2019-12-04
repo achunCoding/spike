@@ -46,8 +46,50 @@ public class RedisServiceImpl implements RedisService {
                 return false;
             }
             String realKey = prefix.getPrefix() + key;
-            jedis.set(realKey, result);
+            int seconds = prefix.expireSeconds();
+            if (seconds <= 0) {
+                jedis.set(realKey, result);
+            } else {
+                jedis.setex(realKey, seconds, result);
+            }
+
             return true;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    @Override
+    public boolean exists(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            return jedis.exists(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    @Override
+    public Long incr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            return jedis.incr(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    @Override
+    public Long decr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            return jedis.decr(realKey);
         } finally {
             returnToPool(jedis);
         }

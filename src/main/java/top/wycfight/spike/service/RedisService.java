@@ -28,4 +28,28 @@ public interface RedisService {
      * @return
      */
     <T> boolean set(KeyPrefix prefix, String key, T value);
+
+    /**
+     * 判断Key是否存在
+     * @param prefix 前缀
+     * @param key key
+     * @return
+     */
+    boolean exists(KeyPrefix prefix, String key);
+
+    /**
+     * 增加
+     * @param prefix
+     * @param key
+     * @return
+     */
+    Long incr(KeyPrefix prefix, String key);
+
+    /**
+     * 减少
+     * @param prefix
+     * @param key
+     * @return
+     */
+    Long decr(KeyPrefix prefix, String key);
 }
