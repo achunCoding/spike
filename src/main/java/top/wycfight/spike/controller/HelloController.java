@@ -39,7 +39,6 @@ public class HelloController {
     public Result redisSet() {
         User user = new User();
         user.setId(1L);
-        user.setName("11111");
         redisService.set(UserKey.getById, "" + 1, user);
         User result = redisService.get(UserKey.getById , "1", User.class);
         return ResultGenerator.genSuccessResult(result);

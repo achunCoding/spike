@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: wycfight@163.com
@@ -19,8 +20,21 @@ public class User implements Serializable {
 
     private Long id;
 
+    private String username;
 
-    private String name;
+    private String password;
+
+    private String nickname;
+
+    private String salt;
+
+    private String head;
+
+    private Date registerDate;
+
+    private Date lastLoginDate;
+
+    private Integer loginCount;
 
 
 }
