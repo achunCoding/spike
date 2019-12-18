@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>秒杀商品详情</title>
+</head>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-validate/1.19.1/localization/messages_zh.min.js"></script>
+<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<body>
+<div>商品秒杀详情</div>
+<div>
+    <span th:if="${user == null}">您还没有登录，请登录再操作<br></span>
+    <span>没有收获地址提示。。</span>
+</div>
+<table>
+    <tr>
+        <td>商品名称</td>
+        <td colspan="3" th:text="${good.goodsName}"></td>
+    </tr>
+    <tr>
+        <td>商品图片</td>
+        <td colspan="3"><img th:src="@{${good.goodsImg}}" alt="" width="200px" height="200px"></td>
+    </tr>
+    <tr>
+        <td>秒杀开始时间</td>
+        <td th:text="${#dates.format(good.startDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td id="spikeTip">
+            <input type="hidden" th:value="${remainSeconds}" id="remainSeconds">
+            <span th:if="${spikeStatus == 0}">秒杀倒计时:<span id="countDown" th:text="${remainSeconds}"></span>秒</span>
+            <span th:if="${spikeStatus == 1}">秒杀进行中</span>
+            <span th:if="${spikeStatus == 2}">秒杀已结束</span>
+        </td>
+        <td>
+            <form id="spikeForm" method="post" action="/spike/spike">
+                <button type="submit" id="spikeButton">立刻秒杀</button>
+                <input type="hidden" name="goodId" th:value="${good.id}">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>商品原价</td>
+        <td colspan="3" th:text="${good.goodsPrice}"></td>
+    </tr>
+    <tr>
+        <td>秒杀价</td>
+        <td colspan="3" th:text="${good.spikePrice}"></td>
+    </tr>
+    <tr>
+        <td>库存数量</td>
+        <td colspan="3" th:text="${good.stock}"></td>
+    </tr>
+</table>
+</body>
+<script>
+    $(function() {
+        countDown()
+
+    });
+    function countDown() {
+        var second = $("#remainSeconds").val();
+        var timeout;
+        if (second > 0) {
+            // 秒杀未开始
+            $("#spikeButton").attr("disabled", true);
+            timeout = setTimeout(function() {
+                $("#countDown").text(second - 1);
+                $("#remainSeconds").val(second - 1)
+                countDown();
+            },1000);
+
+        } else if (second == 0) {
+            // 秒杀进行中
+            $("#spikeButton").attr("disabled", false);
+            if (timeout) {
+                clearTimeout(timeout)
+            }
+            $("#spikeTip").html("秒杀进行中")
+        } else {
+            // 秒杀结束了
+            $("#spikeButton").attr("disabled", true);
+            $("#spikeTip").html("秒杀已经结束")
+        }
+    }
+</script>
+</html>

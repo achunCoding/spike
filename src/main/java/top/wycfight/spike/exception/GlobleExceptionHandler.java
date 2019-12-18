@@ -21,12 +21,16 @@ public class GlobleExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public Result exceptionHandler(HttpServletRequest request, Exception e) {
+        if (e instanceof  GlobleException) {
+            GlobleException ex = (GlobleException) e;
+            return ResultGenerator.genFailResult(ex.getMessage());
+        }
         if (e instanceof BindException) {
             BindException ex = (BindException) e;
             List<ObjectError> allErrors = ex.getAllErrors();
             ObjectError objectError = allErrors.get(0);
             String message = objectError.getDefaultMessage();
-            return ResultGenerator.genErrorResult(10008, "参数校验错误："+ message);
+            return ResultGenerator.genErrorResult(10008,  message);
         } else {
             return ResultGenerator.genErrorResult(10010, "服务器错误");
         }

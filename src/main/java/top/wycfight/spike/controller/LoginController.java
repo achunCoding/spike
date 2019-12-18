@@ -12,6 +12,7 @@ import top.wycfight.spike.service.UserService;
 import top.wycfight.spike.util.Result;
 import top.wycfight.spike.util.ResultGenerator;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -36,12 +37,9 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(@Valid LoginDTO loginDTO) {
+    public Result login(@Valid LoginDTO loginDTO, HttpServletResponse response) {
         log.info("请求参数 loginDTO :{}", loginDTO.toString());
-        String userMsg = userService.login(loginDTO);
-        if (!"OK".equals(userMsg)) {
-            return ResultGenerator.genErrorResult(10004, userMsg);
-        }
+        userService.login(response, loginDTO);
         return ResultGenerator.genSuccessResult();
     }
 }

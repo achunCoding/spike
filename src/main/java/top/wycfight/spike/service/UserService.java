@@ -3,6 +3,8 @@ package top.wycfight.spike.service;
 import top.wycfight.spike.dto.LoginDTO;
 import top.wycfight.spike.entity.User;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author: wycfight@163.com
  * @description: 用户Service
@@ -21,5 +23,12 @@ public interface UserService {
      * 用户登录接口
      * @return
      */
-    String login(LoginDTO loginDTO);
+    boolean login(HttpServletResponse response, LoginDTO loginDTO);
+
+    /**
+     * 根据Token获取用户细腻
+     * @param token token
+     * @return
+     */
+    User getByToken(HttpServletResponse response, String token);
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.wycfight.spike.dao.SpikeGoodsDao">
+  <resultMap id="BaseResultMap" type="top.wycfight.spike.entity.SpikeGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="spike_price" jdbcType="DECIMAL" property="spikePrice" />
+    <result column="stock_count" jdbcType="INTEGER" property="stockCount" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="top.wycfight.spike.entity.SpikeGoods">
+    <result column="end_start" jdbcType="LONGVARCHAR" property="endStart" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, goods_id, start_date, spike_price, stock_count
+  </sql>
+  <sql id="Blob_Column_List">
+    end_start
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from spike_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from spike_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.wycfight.spike.entity.SpikeGoods">
+    insert into spike_goods (id, goods_id, start_date, 
+      spike_price, stock_count, end_start
+      )
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP}, 
+      #{spikePrice,jdbcType=DECIMAL}, #{stockCount,jdbcType=INTEGER}, #{endStart,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="top.wycfight.spike.entity.SpikeGoods">
+    insert into spike_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="spikePrice != null">
+        spike_price,
+      </if>
+      <if test="stockCount != null">
+        stock_count,
+      </if>
+      <if test="endStart != null">
+        end_start,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spikePrice != null">
+        #{spikePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="stockCount != null">
+        #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="endStart != null">
+        #{endStart,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wycfight.spike.entity.SpikeGoods">
+    update spike_goods
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spikePrice != null">
+        spike_price = #{spikePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="stockCount != null">
+        stock_count = #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="endStart != null">
+        end_start = #{endStart,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="top.wycfight.spike.entity.SpikeGoods">
+    update spike_goods
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      spike_price = #{spikePrice,jdbcType=DECIMAL},
+      stock_count = #{stockCount,jdbcType=INTEGER},
+      end_start = #{endStart,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wycfight.spike.entity.SpikeGoods">
+    update spike_goods
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      spike_price = #{spikePrice,jdbcType=DECIMAL},
+      stock_count = #{stockCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

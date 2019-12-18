@@ -7,4 +7,11 @@ package top.wycfight.spike.exception;
  * @modify By:
  **/
 public class GlobleException extends RuntimeException {
+
+    public GlobleException() {
+    }
+
+    public GlobleException(String message) {
+        super(message);
+    }
 }

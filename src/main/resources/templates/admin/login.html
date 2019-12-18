@@ -38,6 +38,7 @@
         }
         var salt = "1a2b3c4d";
         var str = salt.charAt(0) + salt.charAt(1) +  pass + salt.charAt(5) + salt.charAt(3);
+        console.log(str)
         var password = md5(str);
 
 
@@ -53,6 +54,7 @@
                 layer.closeAll();
                 if (data.resultCode === 200) {
                     layer.msg("成功")
+                    window.location.href = "/goods/list";
                 } else {
                     layer.msg(data.message)
                 }
